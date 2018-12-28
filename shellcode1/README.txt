@@ -2,4 +2,5 @@
 binlog备份 xtrabackup全量、增量备份 dump全量备份
 mysql服务监控脚本、监控日志切割脚本
 磁盘空间监控脚本、监控任志宏切割脚本
-iptables封锁IP防轻量级DDOS脚本
+iptables封锁IP防轻量级DDOS脚本 
+增加与ipset结合 实现黑白名单的功能
