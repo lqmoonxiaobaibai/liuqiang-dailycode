@@ -1,0 +1,63 @@
+#!/bin/bash
+#
+#******************************************************************
+#Author:                  liuqiang
+#QQ:                      502135832
+#Date:                    2019-01-26
+#FileName:                redis.sh
+#Description:             The test script
+#Copyright(C):            2019 All rights reserved
+#******************************************************************
+
+#chkconfig: 2345 70 30   //注意：前面的#号是要保留的
+#description: redis //注意：前面的#号是要保留的
+
+REDISPORT=6379
+EXEC=/usr/local/redis/bin/redis-server
+CLIEXEC=/usr/local/redis/bin/redis-cli
+
+PIDFILE=/var/run/redis_$REDISPORT.pid
+CONF="/etc/redis/redis.conf"
+
+
+Pass='MmdqNGpHU09qMXJaNGcK'
+function decrypt_passwd
+{
+tmp_pass=$1
+dec_pass=`echo $tmp_pass|base64 -d`
+}
+
+decrypt_passwd $Pass
+
+
+
+case "$1" in
+    start)
+        if [ -f $PIDFILE ]
+        then
+                echo "$PIDFILE exists, process is already running or crashed"
+        else
+                echo "Starting Redis server..."
+                $EXEC $CONF
+        fi
+        ;;
+    stop)
+        if [ ! -f $PIDFILE ]
+        then
+                echo "$PIDFILE does not exist, process is not running"
+        else
+                PID=$(cat $PIDFILE)
+                echo "Stopping ..."
+                $CLIEXEC  -a "$dec_pass" -p $REDISPORT shutdown
+                while [ -x /proc/${PID} ]
+                do
+                    echo "Waiting for Redis to shutdown ..."
+                    sleep 1
+                done
+                echo "Redis stopped"
+        fi
+        ;;
+    *)
+        echo "Please use start or stop as first argument"
+        ;;
+esac
