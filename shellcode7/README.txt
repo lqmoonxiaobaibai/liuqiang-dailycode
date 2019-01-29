@@ -1,0 +1,8 @@
+邮件告警脚本
+备份脚本
+主从监控脚本
+Memcached状态监控脚本
+Redis状态监控脚本
+NGINX性能监控脚本
+Rsync同步备份脚本
+Rsync备份校验脚本
